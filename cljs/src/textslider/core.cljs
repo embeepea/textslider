@@ -4,23 +4,7 @@
 
 (enable-console-print!)
 
-(def app-state (atom {:value 9}))
-
-(defn text-input [data owner]
-  (om/component
-   (dom/input #js{:type "text" :size 1 :value (:value data)
-                  :onInput (fn [e]
-                             (let [value (.. e -target -value)]
-                               (om/update! data :value value)
-                               ))})))
-
-(defn slider-input [data owner]
-  (om/component
-   (dom/input #js{:type "range" :min 0 :max 10 :step 1 :value (:value data)
-                  :onInput (fn [e]
-                             (let [value (.. e -target -value)]
-                               (om/update! data :value value)
-                               ))})))
+(def app-state (atom {:value 6}))
 
 (defn text-slider [app owner]
   (let [handle-update (fn [e]
@@ -28,11 +12,10 @@
                           (om/update! app :value value)
                           ))]
   (om/component
-   (dom/div nil
-            (om/build text-input app)
-            (om/build slider-input app)
-            ))))
-
+   (dom/div #js{:className "textslider"}
+       (dom/input #js{:type "text" :size 1 :value (:value app) :onInput handle-update })
+       (dom/input #js{:type "range" :min 0 :max 10 :step 1 :value (:value app) :onInput handle-update})
+       ))))
 
 (om/root
  text-slider
